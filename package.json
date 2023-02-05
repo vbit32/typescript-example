@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "date-holidays": "^3.16.15"
+  }
+}
