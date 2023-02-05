@@ -1,71 +1,51 @@
 class PayDateCalculator {
-    name: string;
-    date: Date;
+
+    //The day the loan was funded
+    fundDay: Date;
+
+    //A date containing one of the customers paydays
     payDay: Date;
+
+    //A string representing the frequency at which the customer is paid.
+    //(One these values: weekly, bi-weekly, monthly)
+    paySpan: string;
+
+    //A boolean determining whether or not the
+    // customer receives their paycheck via direct deposit.
     hasDirectDeposit: boolean;
-        
+
+    //multi dimensional array of dates containing holidays, each index containing holidayName and holidayDate
+    holidays = [
+        { holidayName: "New Years Day", holidayDate: new Date("January 1 2023") },
+        { holidayName: "Fourth of July", holidayDate: new Date("July 4 2023")},
+        { holidayName: "Christmas", holidayDate: new Date("December 25 2023") }
+        //only adding a few for example
+      ]
 
     //this is where the object is instantiated
-    constructor(name: string, date: Date) {
-        this.name = name;
-
+    constructor(fundDay:Date, payDay: Date, paySpan: string, hasDD: boolean) {
+        this.fundDay = fundDay;
+        this.payDay = payDay;
+        this.paySpan = paySpan;
+        this.hasDirectDeposit = hasDD;
     }
     
-    run(speed:number = 0) {
-        console.log("A " + this.name + " is moving at " + speed + " mph!");
-    }
 
-    public calculateDueDate(fundDay: Date, holidays: Date[], paySpan: string,
+    public calculateDueDate(fundDay: Date, paySpan: string,
         payDay: Date, hasDirectDeposit: boolean): Date {
         
-        dueDate: Date;
-
+        
         //add logic
         return dueDate;
     }
-
 }
 
-//additional functionality to calculate all holidays
-const holidays = [
-    { name: "New Years Day", holidayMonth: 1, holidayDate: 1 },
-    { name: "Fourth of July", holidayMonth: 7, holidayDate: 4},
-    { name: "Christmas", holidayMonth: 12, holidayDate: 25 }
-  ]
 
-
-  /*
-function getDate(year, month, week, day) {
-    const firstDay = 1;
-    if (week < 0) {
-        month++;
-    }
-    const date = new Date(year, month, (week * 7) + firstDay);
-    if (day < date.getDay()) {
-        day += 7;
-    }
-    date.setDate(date.getDate() - date.getDay() + day);
-    return date;
-}
-function getHoliday(month, week, day) {
-    return holidays[month + "," + week + "," + day];
-}
-function getDateString(year, month, week, day) {
-    const date = getDate(year, month, week, day);
-    const holiday = getHoliday(month, week, day);
-    let dateString = date.toLocaleDateString();
-    if (holiday) {
-        dateString += " \xa0\xa0\xa0" + holiday;
-    }
-    return dateString;
-}
-console.log(getDateString(2021, 4, -1, 1)); // Memorial Day, 2021
-*/
 
 
 //TEST OBJECTS update these later
 //let mercObj = new PayDateCalculator("Mercedes-Benz GLA");
 //let hondaObj = new PayDateCalculator("Honda City")
 
-mercObj.run();  // A Mercedes started A Mercedes-Benz GLA is moving at 150 mph!
-hondaObj.run(); // A Honda started A Honda City is moving at 100 mph!
+//mercObj.run();  // A Mercedes started A Mercedes-Benz GLA is moving at 150 mph!
+//hondaObj.run(); // A Honda started A Honda City is moving at 100 mph!
