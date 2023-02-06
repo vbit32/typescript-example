@@ -1,9 +1,10 @@
-//the following class instantiates an object with the given passed paramters, and then determines what the payment due date is.
+//the following class will create an object with the given passed paramters, and then determines what the payment due date is.
 //the program starts with the due date being set to the given pay date
 //it then calculates if the current due date falls on a weekend
 //if so, it will determine whether or not to increment or decrement by 1 day depending on if it is a sunday or a saturday
 //it then calculates if the current due date is a holiday
-//if so, it will always always decrement
+//if so, it will always always decrement, UNLESS the holiday falls on a monday, so I increment to avoid any infinite loop between weekend and holiday checking
+//the program then goes back to check if it is a weekend, as per the document provided
 //it will then check to see if it has been at least 10 days since the fund day
 //if it has been less than 10 days, it will calculate the new pay date based on the pay span, either adding 7, 14, or 30 days depending on the pay span
 //the program will loop recursively until a value is returned
@@ -11,10 +12,10 @@
 class PayDateCalculator {
 
     //The day the loan was funded
-    fundDay: Date = new Date();
+    fundDay:Date ;
 
     //A date containing one of the customers paydays
-    payDay: Date = new Date();
+    payDay:Date ;
 
     //A string representing the frequency at which the customer is paid.
     //(One these values: 'weekly', 'bi-weekly', 'monthly')
@@ -24,7 +25,7 @@ class PayDateCalculator {
     // customer receives their paycheck via direct deposit.
     hasDirectDeposit: boolean;
 
-    dueDate: Date = new Date();
+    dueDate: Date ;
 
     //multi dimensional array of dates containing holidays, each index containing holidayName and holidayDate
     holidays = [
@@ -40,7 +41,7 @@ class PayDateCalculator {
         this.payDay = payDay;
         this.paySpan = paySpan;
         this.hasDirectDeposit = hasDD;
-        //calculate dueDate later
+        //initialize due date to the current pay date
         this.dueDate = this.payDay;
     }
     
@@ -173,7 +174,9 @@ class PayDateCalculator {
     //checks if its been at least ten days since the fund date
     tenDaysSinceFundDay():boolean {
         //returns true or false depending on if the due date is greater than or equal to 10 days more than the fund day
-        return this.dueDate.getDate() >= (this.fundDay.getDate()+10); 
+        let diffInTime = this.dueDate.getTime() - this.fundDay.getTime();
+        let diffInDays = diffInTime / (1000 * 3600 * 24);
+        return diffInDays >= 10; 
     }
 
     //increments the current due date by 1 day
@@ -187,8 +190,19 @@ class PayDateCalculator {
     }
 }
 
-let test = new PayDateCalculator(new Date("December 12 2022"), new Date("December 23 2022"), "weekly", true );
+
+let test = new PayDateCalculator(new Date("December 19 2022"), new Date("December 23 2022"), "weekly", true );
+let test2 = new PayDateCalculator(new Date("December 12 2022"), new Date("December 25 2022"), "weekly", true );
+let test3 = new PayDateCalculator(new Date("December 01 2022"), new Date("December 8 2022"), "monthly", true );
+let test4 = new PayDateCalculator(new Date("December 12 2022"), new Date("December 25 2022"), "bi-weekly", true );
+let test5 = new PayDateCalculator(new Date("December 30 2022"), new Date("January 2 2023"), "bi-weekly", true );
 
 //test object instantiation
 
 console.log ("this is a test");
+console.log("PROGRAM START:");
+console.log ("the due date for the first test is: " + test.calculateDueDate());
+console.log ("the due date for the second test is: " + test2.calculateDueDate());
+console.log ("the due date for the third test is: " + test3.calculateDueDate());
+console.log ("the due date for the fourth test is: " + test4.calculateDueDate());
+console.log ("the due date for the fifth test is: " + test5.calculateDueDate());
